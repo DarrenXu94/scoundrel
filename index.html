@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scoundrel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+
+    #game-container {
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .dungeon,
+    .inventory,
+    .slain-cards {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+
+    .card {
+      display: inline-block;
+      padding: 10px;
+      margin: 5px;
+      border: 1px solid #333;
+      border-radius: 8px;
+      background-color: white;
+      cursor: pointer;
+      width: 100px;
+      text-align: center;
+    }
+
+    .card.diamonds,
+    .card.hearts {
+      background-color: #d12d36;
+      color: white;
+    }
+
+    .health {
+      margin-bottom: 20px;
+    }
+
+    #game-rules-popover {
+      overflow: auto;
+      height: 90vh;
+      padding: 1rem;
+    }
+
+    .popover-header {
+      display: flex;
+      justify-content: flex-end;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="game-container">
+    <div class="difficulty">
+      <label for="difficulty">Difficulty:</label>
+
+      <select name="difficulty" id="difficulty" value="Easy">
+        <option>Easy</option>
+        <option>Medium</option>
+        <option>Hard</option>
+
+      </select>
+    </div>
+    <div class="health">Health: <span id="health">**</span></div>
+    <button id="draw-dungeon">Draw Dungeon</button>
+    <div class="dungeon" id="dungeon"></div>
+    <button id="flee-dungeon" disabled>Flee</button>
+    <div id="is-fleeing"></div>
+    <h3>Inventory</h3>
+    <div class="inventory" id="inventory"></div>
+    <h3>Slain Cards</h3>
+    <div class="slain-cards" id="slain-cards"></div>
+    <div class="deck-counter">Cards Left in Deck: <span id="deck-count"></span></div>
+
+    <button popovertarget="game-rules-popover">Rules</button>
+
+    <div popover="manual" id="game-rules-popover">
+      <div class="popover-header">
+        <button popovertarget="game-rules-popover" popovertargetaction="hide">Close</button>
+      </div>
+      <h3>Scoundrel</h3>
+      <p>Welcome to Scoundrel, a strategic single-player card game! Here are the easy-to-follow rules:</p>
+
+      <hr />
+
+      <p><strong>Objective</strong>: Complete dungeons until all cards in the deck are gone</p>
+
+      <h4>Starting the game</h4>
+      <ul>
+        <li>You begin with <strong>20 health</strong>.</li>
+        <li>The deck contains:<ul>
+            <li><strong>Black cards (♠️, ♣️): Monsters</strong> that attack you.</li>
+            <li><strong>Hearts (♥️): Healing cards</strong> that restore your health.</li>
+            <li><strong>Diamonds (♦️): Weapons</strong> to defend against monsters.</li>
+          </ul>
+        </li>
+      </ul>
+
+      <hr />
+
+      <h4>How to Play Each Round</h4>
+      <ol>
+        <li>
+          <p><strong>Draw Cards</strong>:</p>
+          <ul>
+            <li>At the start of a round, draw <strong>4 cards</strong> from the deck.</li>
+            <li>If fewer than 4 cards remain in the deck, draw all remaining cards.</li>
+          </ul>
+        </li>
+        <li>
+          <p><strong>Choose Cards</strong>:</p>
+          <ul>
+            <li>Select one card at a time. Once selected, the card is removed from the round.</li>
+          </ul>
+        </li>
+      </ol>
+
+      <hr />
+
+      <h4>Card Effects</h4>
+
+      <ol>
+        <li>
+          <p><strong>Black Cards (♠️, ♣️): Monsters</strong></p>
+          <ul>
+            <li>Monsters deal damage to you based on their face value (e.g., a 7♠️ deals 7 damage).</li>
+            <li><strong>If you have a weapon (♦️)</strong>:<ul>
+                <li><strong>If the monster’s value is less than or equal to your weapon</strong>, you defeat it with no
+                  damage taken. Move the monster to a separate pile.</li>
+                <li><strong>If the monster’s value is higher than your weapon</strong>, you lose health equal to the
+                  difference (monster value - weapon value).</li>
+              </ul>
+            </li>
+            <li><strong>If there’s already a monster in the pile</strong>:<ul>
+                <li>Add the new monster to the pile <strong>if its value is lower than or equal to the highest value in
+                    the pile</strong>.</li>
+                <li>If the new monster’s value is higher, take direct damage equal to the monster’s value</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <p><strong>Hearts (♥️): Healing</strong></p>
+          <ul>
+            <li>Restore health equal to the card’s face value, up to a maximum of 20 health.</li>
+          </ul>
+        </li>
+        <li>
+          <p><strong>Diamonds (♦️): Weapons</strong></p>
+          <ul>
+            <li>Weapons can be used to defend against monsters in this or future rounds.</li>
+          </ul>
+        </li>
+      </ol>
+
+      <hr />
+
+      <h3>End of the Round</h3>
+      <ul>
+        <li>When there is <strong>1 card left</strong>, draw cards from the deck until you have 4 cards in hand (or
+          until the deck is empty).</li>
+      </ul>
+
+      <hr />
+
+      <h3>Special Action: Flee</h3>
+      <ul>
+        <li>You may <strong>flee</strong> to reshuffle all cards in the current round back into the deck.</li>
+        <li><strong>You cannot flee two rounds in a row.</strong></li>
+      </ul>
+
+      <hr />
+
+      <h3>Winning the game</h3>
+      <ul>
+        <li>Complete all dungeons until all cards in the deck are gone.</li>
+      </ul>
+
+
+    </div>
+
+
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
