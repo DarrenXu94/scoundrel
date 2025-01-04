@@ -11,7 +11,7 @@ import {
 function drawGameState(gameState: GameState) {
   // Update health
   document.getElementById("health")!.textContent =
-    gameState.player.health.toString();
+    gameState.player.health.toString() + "/ " + MAX_HEALTH + " HP" + " ❤️";
 
   document.getElementById("deck-count")!.textContent =
     gameState.deck.cards.length.toString();
@@ -109,6 +109,7 @@ function onCardClick(index: number, gameState: GameState) {
   if (gameState.player.health <= 0) {
     alert("Game Over");
     drawDungeonBtn.disabled = false;
+    difficulty.style.display = "block";
     // drawDungeon({
     //   deck: createDeck(),
     //   dungeon: [],
@@ -131,6 +132,7 @@ function onCardClick(index: number, gameState: GameState) {
   if (gameState.deck.cards.length === 0 && gameState.dungeon.length === 0) {
     alert("You win!");
     drawDungeonBtn.disabled = false;
+    difficulty.style.display = "block";
   }
 
   drawGameState(gameState);
@@ -183,11 +185,15 @@ const drawDungeonBtn = document.getElementById(
   "draw-dungeon"
 )! as HTMLButtonElement;
 
+const difficulty = document.getElementById("difficulty") as HTMLSelectElement;
 // Initial draw
 drawDungeonBtn.addEventListener("click", () => {
-  const difficulty = document.getElementById("difficulty") as HTMLSelectElement;
-
   const difficultyValue = difficulty.value;
+
+  difficulty.style.display = "none";
+
+  const deckCounter = document.getElementById("deck-counter") as HTMLDivElement;
+  deckCounter.style.display = "block";
 
   drawDungeon({
     deck: createDeck(difficultyValue),

@@ -10,13 +10,14 @@
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      padding: 20px;
+      /* padding: 20px; */
       background-color: #f4f4f4;
     }
 
     #game-container {
       max-width: 600px;
       margin: auto;
+      padding: 20px;
     }
 
     .dungeon,
@@ -25,13 +26,14 @@
       display: flex;
       flex-wrap: wrap;
       margin: 20px 0;
+      gap: 10px;
     }
 
     .card {
       display: inline-block;
       padding: 10px;
-      margin: 5px;
-      border: 1px solid #333;
+      /* margin: 5px; */
+      border: 2px solid #333;
       border-radius: 8px;
       background-color: white;
       cursor: pointer;
@@ -59,10 +61,118 @@
       display: flex;
       justify-content: flex-end;
     }
+
+    header {
+      width: 100%;
+      /* text-align: center; */
+      background-color: #333;
+      color: white;
+      padding: 20px 0;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      display: flex;
+      justify-content: center;
+    }
+
+    .rules-button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      color: white;
+      background-color: #007BFF;
+      border: 2px solid #333;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .rules-button:hover {
+      background-color: #0056b3;
+    }
+
+    .header-content {
+      max-width: 70em;
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .header-content h1 {
+      flex: 1;
+      text-align: center;
+    }
+
+    .close-button {
+      background-color: #d12d36;
+      color: white;
+      border: 2px solid #333;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+    }
+
+    .close-button:hover {
+      background-color: #a00f14;
+    }
+
+    #draw-dungeon {
+      padding: 10px 20px;
+      font-size: 1rem;
+      color: white;
+      background-color: #28a745;
+      border: 2px solid #333;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #draw-dungeon:disabled {
+      background-color: #6c757d;
+      cursor: not-allowed;
+    }
+
+    #draw-dungeon:not(:disabled):hover {
+      background-color: #218838;
+    }
+
+    #flee-dungeon {
+      padding: 10px 20px;
+      font-size: 1rem;
+      color: white;
+      background-color: #ffc107;
+      border: 2px solid #333;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #flee-dungeon:disabled {
+      background-color: #6c757d;
+      cursor: not-allowed;
+    }
+
+    #flee-dungeon:not(:disabled):hover {
+      background-color: #d39e00;
+    }
+
+    #deck-counter {
+      display: none;
+    }
   </style>
 </head>
 
 <body>
+  <header>
+    <div class="header-content">
+      <h1>
+        Scoundrel
+      </h1>
+      <div>
+        <button class="rules-button" popovertarget="game-rules-popover">Rules</button>
+      </div>
+    </div>
+
+  </header>
   <div id="game-container">
     <div class="difficulty">
       <label for="difficulty">Difficulty:</label>
@@ -75,21 +185,26 @@
       </select>
     </div>
     <div class="health">Health: <span id="health">**</span></div>
+
+
     <button id="draw-dungeon">Draw Dungeon</button>
     <div class="dungeon" id="dungeon"></div>
+    <div id="deck-counter" class="deck-counter">
+      <div class="card">
+        <span id="deck-count"></span> cards left
+      </div>
+    </div>
     <button id="flee-dungeon" disabled>Flee</button>
     <div id="is-fleeing"></div>
     <h3>Inventory</h3>
     <div class="inventory" id="inventory"></div>
     <h3>Slain Cards</h3>
     <div class="slain-cards" id="slain-cards"></div>
-    <div class="deck-counter">Cards Left in Deck: <span id="deck-count"></span></div>
 
-    <button popovertarget="game-rules-popover">Rules</button>
 
     <div popover="manual" id="game-rules-popover">
       <div class="popover-header">
-        <button popovertarget="game-rules-popover" popovertargetaction="hide">Close</button>
+        <button class="close-button" popovertarget="game-rules-popover" popovertargetaction="hide">Close</button>
       </div>
       <h3>Scoundrel</h3>
       <p>Welcome to Scoundrel, a strategic single-player card game! Here are the easy-to-follow rules:</p>
@@ -189,6 +304,14 @@
         <li>Complete all dungeons until all cards in the deck are gone.</li>
       </ul>
 
+      <hr />
+
+      <h3>Difficulty levels</h3>
+      <ul>
+        <li>Easy: Full deck</li>
+        <li>Medium: No red Aces or Kings</li>
+        <li>Hard: No red face cards</li>
+      </ul>
 
     </div>
 
