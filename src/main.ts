@@ -1,12 +1,36 @@
-import {
-  GameState,
-  Card,
-  Deck,
-  useCard,
-  flee,
-  DifficultyType,
-  MAX_HEALTH,
-} from "./game";
+import { GameState, Card, Deck, useCard, flee, MAX_HEALTH } from "./game";
+
+export const Difficulty = {
+  Easy: "Easy",
+  Medium: "Medium",
+  Hard: "Hard",
+};
+
+export type DifficultyType = (typeof Difficulty)[keyof typeof Difficulty];
+
+let lastDungeon = [] as Card[];
+
+function renderDungeon(gameState: GameState) {
+  const dungeonContainer = document.getElementById("dungeon")!;
+  dungeonContainer.innerHTML = "";
+
+  gameState.dungeon.forEach((card, index) => {
+    const cardElement = createCardElement(card);
+
+    const isFromDungeon = lastDungeon.some(
+      (lastCard) => lastCard.value === card.value && lastCard.suit === card.suit
+    );
+
+    if (!isFromDungeon) {
+      cardElement.classList.add("drawn");
+    }
+
+    cardElement.addEventListener("click", () => onCardClick(index, gameState));
+    dungeonContainer.appendChild(cardElement);
+  });
+
+  lastDungeon = [...gameState.dungeon];
+}
 
 function drawGameState(gameState: GameState) {
   // Update health
@@ -23,14 +47,15 @@ function drawGameState(gameState: GameState) {
   const fleeBtn = document.getElementById("flee-dungeon")! as HTMLButtonElement;
   fleeBtn.disabled = gameState.hasFled;
 
+  renderDungeon(gameState);
   // Render dungeon cards
-  const dungeonContainer = document.getElementById("dungeon")!;
-  dungeonContainer.innerHTML = "";
-  gameState.dungeon.forEach((card, index) => {
-    const cardElement = createCardElement(card);
-    cardElement.addEventListener("click", () => onCardClick(index, gameState));
-    dungeonContainer.appendChild(cardElement);
-  });
+  // const dungeonContainer = document.getElementById("dungeon")!;
+  // dungeonContainer.innerHTML = "";
+  // gameState.dungeon.forEach((card, index) => {
+  //   const cardElement = createCardElement(card);
+  //   cardElement.addEventListener("click", () => onCardClick(index, gameState));
+  //   dungeonContainer.appendChild(cardElement);
+  // });
 
   // Render inventory
   const inventoryContainer = document.getElementById("inventory")!;
@@ -77,13 +102,17 @@ function fleeClicked(gameState: GameState) {
   drawGameState(gameState);
 }
 
-function drawDungeon(gameState: GameState) {
+function drawDungeon(gameState: GameState, init = false) {
   // if (gameState.deck.length < 4) return alert('Not enough cards left in the deck!');
   // gameState.dungeon = gameState.deck.splice(-4); // Draw 4 cards
 
-  document.getElementById("flee-dungeon")!.addEventListener("click", () => {
-    fleeClicked(gameState);
-  });
+  document.getElementById("flee-dungeon")!.addEventListener(
+    "click",
+    () => {
+      fleeClicked(gameState);
+    },
+    { once: true }
+  );
 
   // draw 4 cards from the deck or until the deck is empty
   for (let i = gameState.dungeon.length; i < 4; i++) {
@@ -97,7 +126,9 @@ function drawDungeon(gameState: GameState) {
     }
   }
 
-  drawGameState(gameState);
+  if (init) {
+    drawGameState(gameState);
+  }
 }
 
 function onCardClick(index: number, gameState: GameState) {
@@ -195,11 +226,14 @@ drawDungeonBtn.addEventListener("click", () => {
   const deckCounter = document.getElementById("deck-counter") as HTMLDivElement;
   deckCounter.style.display = "block";
 
-  drawDungeon({
-    deck: createDeck(difficultyValue),
-    dungeon: [],
-    player: { health: MAX_HEALTH, inventory: null, slainCards: [] },
-    hasFled: false,
-  });
+  drawDungeon(
+    {
+      deck: createDeck(difficultyValue),
+      dungeon: [],
+      player: { health: MAX_HEALTH, inventory: null, slainCards: [] },
+      hasFled: false,
+    },
+    true
+  );
   drawDungeonBtn.disabled = true;
 });

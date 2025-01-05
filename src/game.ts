@@ -3,15 +3,7 @@ export interface Card {
   value: string; // e.g., 'A', '2', ..., 'K'
 }
 
-export const Difficulty = {
-  Easy: "Easy",
-  Medium: "Medium",
-  Hard: "Hard",
-};
-
 export const MAX_HEALTH = 20;
-
-export type DifficultyType = (typeof Difficulty)[keyof typeof Difficulty];
 
 export class Deck {
   cards: Card[] = [];
