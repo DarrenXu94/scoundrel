@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+  <link rel="stylesheet" href="src/layout.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Scoundrel</title>
   <style>
@@ -60,17 +61,6 @@
     .popover-header {
       display: flex;
       justify-content: flex-end;
-    }
-
-    header {
-      width: 100%;
-      /* text-align: center; */
-      background-color: #333;
-      color: white;
-      padding: 20px 0;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      display: flex;
-      justify-content: center;
     }
 
     .rules-button {
@@ -186,7 +176,7 @@
       <h1>
         Scoundrel
       </h1>
-      <div>
+      <div class="header-buttons">
         <button class="rules-button" popovertarget="game-rules-popover">Rules</button>
       </div>
     </div>
