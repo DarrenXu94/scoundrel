@@ -1,5 +1,7 @@
 import { GameState, Card, Deck, useCard, flee, MAX_HEALTH } from "./game";
 
+import { handlePopover } from "./popover";
+
 export const Difficulty = {
   Easy: "Easy",
   Medium: "Medium",
@@ -9,6 +11,8 @@ export const Difficulty = {
 export type DifficultyType = (typeof Difficulty)[keyof typeof Difficulty];
 
 let lastDungeon = [] as Card[];
+
+handlePopover();
 
 function renderDungeon(gameState: GameState) {
   const dungeonContainer = document.getElementById("dungeon")!;

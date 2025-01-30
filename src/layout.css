@@ -22,3 +22,24 @@ header {
     }
   }
 }
+
+/* Popover */
+
+#game-rules-popover {
+  overflow: auto;
+  height: 90vh;
+  padding: 1rem;
+}
+
+.popover-header {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1rem;
+}
+
+@media (max-width: 50rem) {
+  #game-rules-popover {
+    height: 100vh;
+    border: 0;
+  }
+}
