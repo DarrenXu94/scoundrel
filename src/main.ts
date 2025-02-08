@@ -12,6 +12,8 @@ export type DifficultyType = (typeof Difficulty)[keyof typeof Difficulty];
 
 let lastDungeon = [] as Card[];
 
+let hasStarted = false;
+
 handlePopover();
 
 function renderDungeon(gameState: GameState) {
@@ -37,6 +39,11 @@ function renderDungeon(gameState: GameState) {
 }
 
 function drawGameState(gameState: GameState) {
+  document.getElementById("health-wrapper")!.style.display = "block";
+  document.getElementById("inventory-wrapper")!.style.display = "block";
+  document.getElementById("slain-cards-wrapper")!.style.display = "block";
+  document.getElementById("flee-dungeon")!.style.display = "block";
+
   // Update health
   document.getElementById("health")!.textContent =
     gameState.player.health.toString() + "/ " + MAX_HEALTH + " HP" + " ❤️";

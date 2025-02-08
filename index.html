@@ -52,9 +52,6 @@
       margin-bottom: 20px;
     }
 
-
-
-
     .rules-button {
       padding: 10px 20px;
       font-size: 1rem;
@@ -118,6 +115,7 @@
     }
 
     #flee-dungeon {
+      display: none;
       padding: 10px 20px;
       font-size: 1rem;
       color: white;
@@ -138,6 +136,12 @@
     }
 
     #deck-counter {
+      display: none;
+    }
+
+    #health-wrapper,
+    #inventory-wrapper,
+    #slain-cards-wrapper {
       display: none;
     }
 
@@ -201,10 +205,10 @@
 
       </select>
     </div>
-    <div class="health">Health: <span id="health">**</span></div>
+    <div class="health" id="health-wrapper">Health: <span id="health">**</span></div>
 
 
-    <button id="draw-dungeon">Draw Dungeon</button>
+    <button id="draw-dungeon">Start game</button>
     <div class="dungeon" id="dungeon"></div>
     <div id="deck-counter" class="deck-counter">
       <div class="card">
@@ -213,10 +217,16 @@
     </div>
     <button id="flee-dungeon" disabled>Flee</button>
     <div id="is-fleeing"></div>
-    <h3>Inventory</h3>
-    <div class="inventory" id="inventory"></div>
-    <h3>Slain Cards</h3>
-    <div class="slain-cards" id="slain-cards"></div>
+    <div id="inventory-wrapper">
+
+      <h3>Inventory</h3>
+      <div class="inventory" id="inventory"></div>
+    </div>
+    <div id="slain-cards-wrapper">
+
+      <h3>Slain Cards</h3>
+      <div class="slain-cards" id="slain-cards"></div>
+    </div>
 
 
     <div popover="manual" id="game-rules-popover">
