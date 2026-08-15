@@ -12,8 +12,6 @@ export type DifficultyType = (typeof Difficulty)[keyof typeof Difficulty];
 
 let lastDungeon = [] as Card[];
 
-let hasStarted = false;
-
 handlePopover();
 
 function renderDungeon(gameState: GameState) {
@@ -24,7 +22,8 @@ function renderDungeon(gameState: GameState) {
     const cardElement = createCardElement(card);
 
     const isFromDungeon = lastDungeon.some(
-      (lastCard) => lastCard.value === card.value && lastCard.suit === card.suit
+      (lastCard) =>
+        lastCard.value === card.value && lastCard.suit === card.suit,
     );
 
     if (!isFromDungeon) {
@@ -122,7 +121,7 @@ function drawDungeon(gameState: GameState, init = false) {
     () => {
       fleeClicked(gameState);
     },
-    { once: true }
+    { once: true },
   );
 
   // draw 4 cards from the deck or until the deck is empty
@@ -196,7 +195,7 @@ const createDeck = (difficulty: DifficultyType) => {
         !(
           (card.suit === "hearts" || card.suit === "diamonds") &&
           (card.value === "A" || card.value === "K")
-        )
+        ),
     );
   }
 
@@ -209,7 +208,7 @@ const createDeck = (difficulty: DifficultyType) => {
             card.value === "K" ||
             card.value === "Q" ||
             card.value === "J")
-        )
+        ),
     );
   }
 
@@ -224,7 +223,7 @@ const createDeck = (difficulty: DifficultyType) => {
 // };
 
 const drawDungeonBtn = document.getElementById(
-  "draw-dungeon"
+  "draw-dungeon",
 )! as HTMLButtonElement;
 
 const difficulty = document.getElementById("difficulty") as HTMLSelectElement;
@@ -244,7 +243,7 @@ drawDungeonBtn.addEventListener("click", () => {
       player: { health: MAX_HEALTH, inventory: null, slainCards: [] },
       hasFled: false,
     },
-    true
+    true,
   );
   drawDungeonBtn.disabled = true;
 });
